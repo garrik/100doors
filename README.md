@@ -6,3 +6,4 @@ The third time, every 3rd door (door #3, #6, #9, ...), etc, until you only visit
 Question: What state are the doors in after the last pass? Which are open, which are closed?
 
 Code dojo link to exercise https://beta.cyber-dojo.org/kata/edit/2MQeUl
+                           https://beta.cyber-dojo.org/kata/edit/wDRcTk

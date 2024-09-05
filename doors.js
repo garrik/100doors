@@ -1,73 +1,48 @@
 'use strict';
 
 module.exports = {
-  toggledCount,
-  toggle,
-  toggleIncrement,
-  reset,
+  init,
   isOpen,
-  toggleAgain,
-  incrementUpdateCount,
-  show
+  toggle,
+  visit,
+  visitIncrementingStepUntil,
+  toggledCounter,
+  count
 };
 
 let doors_;
-let toggledCount_;
-let incrementUpdateCount_;
+let toggledCounters_;
 
-// zero means port is closed, one means door is open
-function doors() {
-  return [
-    0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-    0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-    0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-    0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-    0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-    0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-    0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-    0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-    0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-    0, 0, 0, 0, 0, 0, 0, 0, 0, 0
-  ];
+function init(doors){
+  doors_ = doors;
+  toggledCounters_ = [];
 }
 
-function reset() {
-  doors_ = doors();
-  toggledCount_ = 0;
-  incrementUpdateCount_ = 0;
+function isOpen(index) {
+  return doors_[index] === 1 ? true : false;
 }
 
-function toggledCount() {
-  return toggledCount_;
+function toggle(index){
+  doors_[index] = doors_[index] === 1 ? 0 : 1;
+  toggledCounters_[index] = Number.isInteger(toggledCounters_[index]) ? toggledCounters_[index] + 1 : 1; 
 }
 
-function incrementUpdateCount() {
-  return incrementUpdateCount_;
-}
-
-function isOpen(i) {
-  return doors_[i] === 1;
-}
-
-function toggle(i) {
-  doors_[i] = (doors_[i] + 1) % 2;
-  toggledCount_++;
-  return doors_[i];
-}
-
-function toggleIncrement(increment) {
-  for (let i = 0; i < doors_.length; i = i + increment) {
+function visit(step){
+  for(let i = 0; i < doors_.length; i = i + step){
     toggle(i);
   }
 }
 
-function toggleAgain() {
-  for (let i = 1; i <= doors_.length; i++) {
-    toggleIncrement(i);
-    incrementUpdateCount_++;
+function visitIncrementingStepUntil(n){
+  for(let i = 1; i <= n; i = i + 1){
+    visit(i);
   }
 }
 
-function show(count, render, state) {
-  return state.showState(count, render, doors_);
+function toggledCounter(index){
+  return toggledCounters_[index];
+}
+
+function count(){
+  return doors_.length;
 }
