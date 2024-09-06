@@ -3,6 +3,7 @@
 const doors = require('./doors.js');
 
 describe('the door', () => {
+
   beforeEach(() => {
     doors.init([
       0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
@@ -32,7 +33,8 @@ describe('the door', () => {
   });
 });
 
-describe('the visit of doors', () => {
+describe('the state of visited doors', () => {
+
   beforeEach(() => {
     doors.init([
       0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
@@ -75,19 +77,45 @@ describe('the visit of doors', () => {
     doors.isOpen(99).should.equal(false);
   });
   
+});
+
+describe('the visit of doors with incremental step', () => {
+
+  let toggledCounters;
+  
+  function toggle(index){
+    toggledCounters[index] = toggledCounters[index] + 1; 
+  }
+  
+  beforeEach(() => {
+    doors.init([
+      0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+      0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+      0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+      0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+      0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+      0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+      0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+      0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+      0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+      0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+    ], toggle);
+    toggledCounters = new Array(doors.count()).fill(0);
+  })
+  
   it('should visit all doors once', () => {
     doors.visitIncrementingStepUntil(1);
-    doors.toggledCounter(0).should.equal(1);
-    doors.toggledCounter(1).should.equal(1);
-    doors.toggledCounter(99).should.equal(1);
+    toggledCounters[0].should.equal(1);
+    toggledCounters[1].should.equal(1);
+    toggledCounters[99].should.equal(1);
   });
 
   it('should visit odd doors once, even doors twice', () => {
     doors.visitIncrementingStepUntil(2);
-    doors.toggledCounter(0).should.equal(2);
-    doors.toggledCounter(1).should.equal(1);
-    doors.toggledCounter(0).should.equal(2);
-    doors.toggledCounter(99).should.equal(1);
+    toggledCounters[0].should.equal(2);
+    toggledCounters[1].should.equal(1);
+    toggledCounters[0].should.equal(2);
+    toggledCounters[99].should.equal(1);
   });
   
 });
